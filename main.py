@@ -5,7 +5,11 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired, URL
 from datetime import date
+import os
 
+
+host = os.environ.get("FLASK_HOST")
+port = os.environ.get("FLASK_PORT")
 
 app = Flask(__name__)
 Bootstrap5(app)
@@ -21,4 +25,4 @@ def home():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host=host, port=port, debug=False)
