@@ -1,0 +1,33 @@
+        {% extends "base.html" %}
+
+        {% block content %}
+
+        <!-- Masthead-->
+        <header class="masthead">
+            {% include "home/hero-section.html" %}
+        </header>
+        <!-- Services-->
+        <section class="page-section pb-0" id="services">
+            {% include "home/section-1.html" %}
+        </section>
+        <!-- Portfolio Grid-->
+        <section class="page-section bg-dark" id="portfolio">
+            {% include "home/section-2.html" %}
+        </section>
+        <!-- About-->
+        <section class="page-section" id="about">
+            {% include "home/section-3.html" %}
+        </section>
+        <!-- Team-->
+        <section class="page-section bg-light text-dark" id="team">
+            {% include "home/section-4.html" %}
+        </section>
+        <!-- Clients-->
+        <section class="py-5" id="featured-in">
+            {% include "home/section-5.html" %}
+        </section>
+        <!-- Contact-->
+        <!-- <section class="page-section" id="contact">
+        </section> -->
+
+        {% endblock %}
