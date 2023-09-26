@@ -5,7 +5,7 @@
     <meta name="author" content="" />
     <title>Fakeass Restaurant (not in Gardena)</title>
     <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="static/assets/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="{{url_for('static', filename='assets/favicon.ico')}}" />
     <!-- Font Awesome icons (free version)-->
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <!-- Google fonts-->
@@ -14,5 +14,5 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
-    <link href="static/css/styles.css" rel="stylesheet">
+    <link href="{{url_for('static', filename='css/styles.css')}}" rel="stylesheet">
 </head>
