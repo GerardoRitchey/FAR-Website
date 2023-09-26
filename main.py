@@ -7,6 +7,10 @@ from wtforms.validators import DataRequired, URL
 from datetime import date
 import os, requests
 from authlib.integrations.flask_client import OAuth
+from dotenv import load_dotenv
+
+#load the environment variables from the .env file in the venv
+load_dotenv()
 
 
 app = Flask(__name__)
