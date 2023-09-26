@@ -5,16 +5,16 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired, URL
 from datetime import date
-import os, requests
+import sys, os, requests
 from authlib.integrations.flask_client import OAuth
 from dotenv import load_dotenv
 
-#load the environment variables from the .env file in the venv
+#load load environment variables
 load_dotenv()
 
 
 app = Flask(__name__)
-app.secret_key = 'h@mburger5'
+app.secret_key = os.environ.get("FLASK_SECRET")
 Bootstrap5(app)
 
 host = os.environ.get("FLASK_HOST")
@@ -80,4 +80,7 @@ def profile():
 
 
 if __name__ == "__main__":
-    app.run(host=host, port=port, debug=True)
+    debug_mode = False
+    if "--debug" in sys.argv:
+        debug_mode = True
+    app.run(host=host, port=port, debug=debug_mode)
