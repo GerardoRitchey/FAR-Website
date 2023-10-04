@@ -4,9 +4,9 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired, URL
+from social_apis.instagram import Instagram
 from datetime import date
 import sys, os, requests
-from authlib.integrations.flask_client import OAuth
 from dotenv import load_dotenv
 
 #load load environment variables
@@ -22,61 +22,53 @@ port = os.environ.get("FLASK_PORT")
 
 fb_client_id = os.environ.get("FB_APP_ID")
 fb_secret = os.environ.get("FB_APP_SECRET")
+far_llat = os.environ.get("IG_FAR_LLAT")
 
-oauth = OAuth(app)
-
-# Instagram OAuth Configuration
-oauth.register(
-    name='instagram',
-    client_id= fb_client_id,
-    client_secret= fb_secret, 
-    authorize_url='https://api.instagram.com/oauth/authorize',
-    authorize_params=None,
-    authorize_params_callback=None,
-    authorize_url_params=None,
-    fetch_token='https://api.instagram.com/oauth/access_token',
-    fetch_token_params=None,
-    fetch_token_method='POST',
-    client_kwargs={'scope': 'user_profile,user_media'},
+ig = Instagram(
+    client_id=fb_client_id,
+    client_secret=fb_secret,
+    ll_at=far_llat
 )
-
-
 
 
 @app.route('/')
 def home():
 
-    return render_template("home.html")
+    #the IG api right now does not allow us to query specific types of content, so we pull it all, and filter it here
+    #todo add a method to the IG object that returns only the data type we want. Could be helpful for later
+    user_media_data = ig.get_user_media(limit=10)
+    user_images = []
+
+    for media in user_media_data["data"]:
+        if media["media_type"] == "IMAGE":
+            user_images.append(media)
+        elif media["media_type"] == "CAROUSEL_ALBUM":
+            caption = media["caption"]
+            for image in media["children"]["data"]:
+                image["caption"] = caption  #IG child edges don't have captions, we need to use the ALBUM'S CAPTIONS
+                user_images.append(image)
+    
+
+    user_images = user_images[:(len(user_images) %4 * -1)] #get a full block on the home page
+
+    return render_template("home.html", ig_images=user_images)
 
 
 @app.route("/insta/")
 def instagram_imgs():
 
+    user_media_list = ig.get_user_media(limit=15)
 
-    return render_template("instagram.html")
+    #filter down to just images until we sort out how to handle videos
+    user_images = [ media for media in user_media_list["data"] if media["media_type"] != "VIDEO"]
 
-
-@app.route("/login")
-def login():
-    redirect_uri = url_for('authorize', _external=True)
-
-    return oauth.instagram.authorize_redirect(redirect_uri)
-
-@app.route('/authorize')
-def authorize():
-    token = oauth.instagram.authorize_access_token()
-    session['token'] = token
-    return redirect(url_for('profile'))
+    return render_template("instagram.html", ig_media=user_images)
 
 
-# Display Instagram Profile
-@app.route('/profile')
-def profile():
-    token = session.get('token')
-    if token is None:
-        return 'Not authenticated.'
-    user_info = oauth.instagram.get('me', token=token)
-    return f'Instagram User ID: {user_info["id"]}, Username: {user_info["username"]}'
+
+
+
+#     return render_template("gallery.html", ig_images=user_images)
 
 
 if __name__ == "__main__":
