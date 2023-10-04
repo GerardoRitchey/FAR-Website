@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-section">
+    <div class="container">
+    <!-- Gallery -->
+    <div class="row">
+        {%for image1 in ig_images %}
+        <div class="col-lg-3 col-md-4 col-sm-6 px-0">
+            <div class="sq-ig-img-container" style="">
+                <div class="sq-ig-img-wrap">
+                    <a href="{{image1['media_url']}}" data-lightbox="FAR-Images">
+                        <img src="{{image1['media_url']}}" class="img-fluid" alt="{{image1['caption']}}" style=""/>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {%endfor %}
+    </div>
+</section>
+{% endblock %}

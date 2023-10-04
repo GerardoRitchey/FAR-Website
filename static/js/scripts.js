@@ -53,18 +53,47 @@ window.addEventListener('DOMContentLoaded', event => {
 
 });
 
-    // Function to check screen width and show modal
-    function checkScreenWidthAndShowModal() {
-        // Get the current window width
-        var windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 
-        // Check if the screen width is less than 780px
-        if (windowWidth < 780) {
-            // Screen is too small, do not show the modal
-            alert('Screen is too small to display the modal.');
-        } else {
-            // Screen is large enough, show the modal
-            $('.portfolio-link').modal('show');
+
+    function isScreenSizeLessThan780() {
+        var windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+        return windowWidth < 780;
+    }
+    
+    function disableMobileLightbox() {
+        if (isScreenSizeLessThan780()) {
+            // If we're below 780, bootstrap is going to render images that are mostly the right size.
+            // Lightbox is irrelevant, so remove the data-lightbox attribute.
+            $('[data-lightbox]').removeAttr('data-lightbox');
         }
     }
+    
+function preventLinkNavigation() {
+    const linkElements = document.querySelectorAll("a.ig-lb-image");
+    if (linkElements) {
+        linkElements.forEach(linkElement => {
+            linkElement.addEventListener("click", function (event) {
+                if (isScreenSizeLessThan780()) {
+                    // Prevent the default behavior (e.g., navigation)
+                    event.preventDefault();
+                }
+            });
+        });
+    }
+}
+
+
+lightbox.option({
+    'resizeDuration': 100,
+    'fadeDuration':200,
+    'wrapAround': true,
+    'maxWidth': 700,
+    showImageNumberLabel: false
+    })
+
+
+document.addEventListener("DOMContentLoaded", function(){
+    disableMobileLightbox();
+    preventLinkNavigation();
+})
 
