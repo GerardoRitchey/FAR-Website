@@ -1,0 +1,19 @@
+<div class="container">
+    <div class="text-center">
+        <h2 class="section-heading text-uppercase">Our Recent Dining Experiences</h2>
+        <h3 class="section-subheading fs-5"></h3>
+    </div>
+    <!-- Gallery -->
+    <div class="row">
+        {%for image1 in ig_images %}
+        <div class="col-lg-3 col-md-4 col-sm-6 px-0">
+            <div class="sq-ig-img-container" style="">
+                <div class="sq-ig-img-wrap">
+                    <a href="{{image1['media_url']}}" class="ig-lb-image" data-lightbox="FAR-Images" data-title="{{image1['caption']}}">
+                        <img src="{{image1['media_url']}}" class="img-fluid" alt="{{image1['caption']}}" style=""/>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {%endfor %}
+    </div>

@@ -3,6 +3,42 @@
 {% block content %}
 <section class="page-section">
     <div class="container">
+        <div class="row">
+            {%for media in ig_media: %}
+            <div class="col-lg-4 col-sm-6">
+                <div class="card border-dark mb-5" style="border-radius: 0;">
+
+                    <div class="ig-img-wrapper">
+                        {% if media["media_type"] == "VIDEO": %}
+                            {% set video_url = media['media_url'] %}
+                            <a href="{{media['thumbnail_url']}}" class="ig-lb-image" data-lightbox="image-gallery" data-gallery="FAR Instagram" data-footer="{{media['caption']}}" data-toggle="">
+                                <img src="{{media['thumbnail_url']}}" class="card-img ig-img" style="border-radius: 0;"/>
+                            </a>
+
+
+
+                        {% elif media["media_type"] == "IMAGE": %}
+                        <a href="{{media['media_url']}}" class="ig-lb-image" data-lightbox="image-gallery" data-gallery="FAR Instagram" data-footer="{{media['caption']}}" data-toggle="">
+                            <img src="{{media['media_url']}}" class="card-img ig-img" style="border-radius: 0;"/>
+                        </a>
+                        {% elif media["media_type"] == "CAROUSEL_ALBUM": %}
+                        <a href="{{media['media_url']}}" class="ig-lb-image" data-lightbox="image-gallery" data-gallery="{{media['id']}}" data-footer="{{media['caption']}}" data-toggle="">
+                            <img src="{{media['media_url']}}" class="card-img ig-img" style="border-radius: 0;"/>
+                            <i class="fa-regular fa-images icon-overlay"></i>
+                        </a>
+                        {%for IMAGE in media["children"]["data"][1:]: %}
+                            <a href="{{IMAGE['media_url']}}" class="d-none ig-lb-image" data-lightbox="image-gallery" data-gallery="{{media['id']}}" data-footer="{{IMAGE['caption']}}"  data-toggle=""></a>
+                        {% endfor %}
+                        {% endif %}
+                    </div>                    
+                    <div class="card-body ig-body text-dark">
+
+                        <div class="fs-6">{{media["caption"]}}</div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
 
     </div>
 </section>
