@@ -5,7 +5,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired, URL
 #from social_apis.instagram import Instagram
-from datetime import date
+import datetime
 import sys, os, requests
 from dotenv import load_dotenv
 
@@ -30,6 +30,10 @@ far_llat = os.environ.get("IG_FAR_LLAT")
 #     ll_at=far_llat
 # )
 
+
+@app.template_filter("current_year")
+def current_year_filter(value):
+    return datetime.datetime.now().year
 
 @app.route('/')
 def home():
